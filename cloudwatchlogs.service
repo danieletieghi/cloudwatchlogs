@@ -1,0 +1,22 @@
+[Unit]
+Description=Cloudwatch Logs Service
+Author=Brandon Checketts <brandon@roundsphere.com>
+After=docker.service
+
+[Service]
+User=core
+Restart=always
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill cloudwatchlogs
+ExecStartPre=-/usr/bin/docker rm cloudwatchlogs
+ExecStartPre=/usr/bin/docker pull roundsphere/cloudwatchlogs:stable
+ExecStart=/usr/bin/docker run --name cloudwatchlogs -p 514:514 -e "AWS_ACCESS_KEY_ID=YOUR_AWS_ACCESS_KEY" -e "AWS_SECRET_ACCESS_KEY=YOUR_AWS_SECRET_KEY" roundsphere/cloudwatchlogs:stable
+ExecStop=/usr/bin/docker stop cloudwatchlogs
+
+[X-Fleet]
+Global=true
+MachineMetadata=role=worker
+
+[Install]
+WantedBy=multi-user.target
+
