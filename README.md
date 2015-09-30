@@ -26,6 +26,20 @@ When running the container, provide the credentials through the AWS_ACCESS_KEY_I
 
     /usr/bin/docker run --name cloudwatchlogs -p 514:514 -e "AWS_ACCESS_KEY_ID=YOUR_AWS_KEY" -e "AWS_SECRET_ACCESS_KEY=YOUR_SECRET_KEY" roundsphere/cloudwatchlogs:stable
 
+The following environment variables also affect the awslogs.conf file (defaults shown):
+
+    ```
+    FOLLOW_LOG_FILE=/var/log/syslog
+    UDP_PORT=514
+    TCP_PORT=514
+    LOG_GROUP_NAME=awslogs
+    LOG_STREM_NAME=syslog
+    AWS_REGION="us-east-1"
+    BUFFER_DURATION="5000"
+    INITIAL_POSITION="start_of_file"
+    %H:%M:%S"
+    ```
+
 The prebuilt container is available on dockerhub at [roundsphere/cloudwatchlogs] (https://registry.hub.docker.com/u/roundsphere/cloudwatchlogs/).  The pre-built container will log to a Log Group named 'awslogs', and a stream named 'syslog'. If you'd like to change those, simply clone this repository, change those parameters in the awslogs.conf file, and rebuild the image.
 
 If running on CoreOS, a sample service file is provided in cloudwatchlogs.service
